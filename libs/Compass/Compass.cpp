@@ -1,9 +1,11 @@
 #include <Compass.h>
 
-Compass::Compass() {
-  Adafruit_HMC5883_Unified(12345);
+Compass::Compass(): Adafruit_HMC5883_Unified(12345) {
+  
+}
 
-  if (!begin()) { // to make sure that the connection is right 
+void Compass::begin() {
+  if (!Adafruit_HMC5883_Unified::begin()) { // to make sure that the connection is right 
     Serial.println("Ooops, no HMC5883 detected ... Check your wiring!");
     while (1);
   }
