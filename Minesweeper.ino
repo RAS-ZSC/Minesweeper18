@@ -1,10 +1,8 @@
 #include <SoftwareSerial.h>
-//#include "Minesweeper.h"
 
 // Custom Libs
 #include <HBridge.h>
-#include <Ultrasonic.h>
-//#include <RotaryEncoder.h>
+#include <RF.h>
 
 HBridge hbridge(6, 7, 4, 5);
 SoftwareSerial BT(9, 10);
@@ -13,6 +11,16 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+#ifdef BLUTOOTH_COMMUNICATION
+  if (BT.available() > 0) {
+    int data = BT.read();
+    switch (data) {
+      case 70: hbridge.forward(); break;
+      case 66: hbridge.backward(); break;
+      case 76: hbridge.left(); break;
+      case 82: hbridge.right(); break;
+      defualt: hbridge.stop();
+    }
+  }
+#endif
 }
