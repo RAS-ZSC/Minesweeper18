@@ -1,13 +1,23 @@
-#include <SoftwareSerial.h>
+//#include <SoftwareSerial.h>
 
 // Custom Libs
 #include <HBridge.h>
 #include <RF.h>
+#include <MetalDetector.h>
+#include <Ultrasonic.h>
+#include <Compass.h>
 
-HBridge hbridge(6, 7, 4, 5);
-SoftwareSerial BT(9, 10);
+//HBridge hbridge(6, 7, 4, 5);
+//SoftwareSerial BT(9, 10);
+MetalDetector rdetector(10), ldetector(11);
+Ultrasonic usonic(7, 8, 5, 6);
+RF radio(49, 48);
+Compass compass;
 
 void setup() {
+  Serial.begin(9600);
+  radio.begin();
+  compass.begin();
 }
 
 void loop() {
@@ -23,4 +33,5 @@ void loop() {
     }
   }
 #endif
+  /* TODO: Calibrate Coordinates */
 }
