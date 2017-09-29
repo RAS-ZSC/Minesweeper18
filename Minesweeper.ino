@@ -2,17 +2,22 @@
 
 // Custom Libs
 #include <HBridge.h>
-#include <RF.h>
 #include <MetalDetector.h>
-#include <Ultrasonic.h>
+#include <RotaryEncoder.h>
 #include <Compass.h>
+#include <Ultrasonic.h>
+#include <Mapper.h>
+#include <RF.h>
 
 //HBridge hbridge(6, 7, 4, 5);
 //SoftwareSerial BT(9, 10);
 MetalDetector rdetector(10), ldetector(11);
-Ultrasonic usonic(7, 8, 5, 6);
-RF radio(49, 48);
+RotaryEncoder encoder;
 Compass compass;
+Ultrasonic usonic(7, 8, 5, 6);
+Mapper mapper(encoder, compass, usonic);
+
+RF radio(49, 48);
 
 void setup() {
   Serial.begin(9600);
@@ -21,17 +26,4 @@ void setup() {
 }
 
 void loop() {
-#ifdef BLUTOOTH_COMMUNICATION
-  if (BT.available() > 0) {
-    int data = BT.read();
-    switch (data) {
-      case 70: hbridge.forward(); break;
-      case 66: hbridge.backward(); break;
-      case 76: hbridge.left(); break;
-      case 82: hbridge.right(); break;
-      defualt: hbridge.stop();
-    }
-  }
-#endif
-  /* TODO: Calibrate Coordinates */
 }
