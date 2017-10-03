@@ -6,12 +6,14 @@
 #include <Adafruit_HMC5883_U.h>
 
 class Compass:  Adafruit_HMC5883_Unified {
-  float H = 0, H2 = 0, headingDegrees, headingDegrees2, degree;
+private:
+  float preHeading = 0, headingDegrees, degree;
 public:
   Compass();
   void begin();
   void init();
   float getDegree();
+  float *getField();
 };
 
 #endif

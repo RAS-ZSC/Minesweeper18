@@ -11,35 +11,38 @@ void Compass::begin() {
   }
 }
 
+float *Compass::getField() {
+  static float ret[3];
+  sensors_event_t event;
+  getEvent(&event);
+
+  ret[0] = event.magnetic.x;
+  ret[1] = event.magnetic.y;
+  ret[2] = event.magnetic.z;
+  return ret;
+}
+
 float Compass::getDegree() {
   sensors_event_t event;
   getEvent(&event);
 
   float heading  = atan2(event.magnetic.x, event.magnetic.z);
-  float heading2 = atan2(event.magnetic.y, event.magnetic.x);
 
-  float declinationAngle = 0.22;
-  heading  += declinationAngle;
-  heading2 += declinationAngle;  
+  // Formula: (deg + (min / 60.0)) / (180 / M_PI);
+  float declinationAngle = (4.0 + (29.0 / 60.0)) / (180 / M_PI);
+  heading += declinationAngle;
 
   if (heading < 0)
     heading += 2 * PI;
-  if (heading > 2 * PI)
+  else if (heading > 2 * PI)
     heading -= 2 * PI;
 
-  if (heading2 < 0)
-    heading2 += 2 * PI;
-  if (heading2 > 2 * PI)
-    heading2 -= 2 * PI;
-    
   headingDegrees = heading * 180 / M_PI;
-  headingDegrees2 = heading2 * 180 / M_PI;
-  float s = 2.3;
-  degree = ((H + headingDegrees) + ((H2 + headingDegrees2) / s));
+  degree = preHeading + headingDegrees;
 
   if (degree < 0)
     degree += 2 * 180;
-  if (degree > 2 * 180)
+  else if (degree > 2 * 180)
     degree -= 2 * 180;
 
   return degree;
@@ -47,6 +50,5 @@ float Compass::getDegree() {
 
 void Compass::init() {
   getDegree();
-  H = -headingDegrees;
-  H2 = -headingDegrees2;
+  preHeading = -headingDegrees;
 }
