@@ -1,21 +1,56 @@
+#include <Arduino.h>
 #include <RotaryEncoder.h>
 
-//#include "Encoder.h"
+static RotaryEncoder *ref = NULL;
 
-RotaryEncoder::RotaryEncoder() {
-    //enc1 = Encoder(e1p1, e1p2);
-    //enc2 = Encoder(e2p1, e2p2);
-    lastDistance = 0;
-    oldPosition  = -999;
-    oldPosition2 = -999;
-    //encoderMes = mes;
+int state = 3, pos = 0;
+bool dir = true;
+
+static void encoderUpdate(void) {
+  if (ref) {
+    ref->pos;
+    delay(2);
+    int A = digitalRead(PIN_INT0);
+    int B = digitalRead(PIN_INT1);
+    int input = A << 1 | B;
+    bool step = true;
+
+    if (input == state)
+      return;
+
+    int code = state << 2 | input;
+
+    switch (code) {
+      case 0b0111:
+        step = !ref->dir;
+        break;
+      case 0b1011:
+        step = ref->dir;
+        break;
+      case 0b1101:
+        ref->dir = true;
+        break;
+      case 0b1110:
+        ref->dir = false;
+        break;
+    }
+
+    state = input;
+
+    if (step && state == 3) {
+      ref->dir? ++ref->pos : --ref->pos;
+    }
+  }
+}
+
+RotaryEncoder::RotaryEncoder(float mps) : mps(mps) {
+  pinMode(PIN_INT0, INPUT_PULLUP);
+  pinMode(PIN_INT1, INPUT_PULLUP);
+  attachInterrupt(0, encoderUpdate, CHANGE);
+  attachInterrupt(1, encoderUpdate, CHANGE);
+  ref = this;
 }
 
 float RotaryEncoder::getDistance() {
-  long newPosition = 0; //enc1.read();
-  long newPosition2 = 0; //enc2.read();
-  oldPosition = newPosition;
-  oldPosition2 = newPosition2;
-  long realPos = (newPosition + newPosition2) / 2;
-  return realPos * encoderMes;
+  return pos * mps;
 }

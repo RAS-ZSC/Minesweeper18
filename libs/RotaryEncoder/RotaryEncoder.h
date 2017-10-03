@@ -1,14 +1,16 @@
 #ifndef _ROTARY_ENCODER_H
 #define _ROTARY_ENCODER_H
 
+#define PIN_INT0  2
+#define PIN_INT1  3
 class RotaryEncoder {
 private:
-  //Encoder enc1, enc2;
-  float lastDistance, encoderMes;
-  long oldPosition, oldPosition2;
+  float mps;
 
 public:
-  RotaryEncoder();
+  long pos = 0;
+  bool dir = true;
+  RotaryEncoder(float);
   float getDistance();
 };
 
