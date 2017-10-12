@@ -7,7 +7,7 @@
 
 class Mapper {
 private:
-  int x = 0, y = 0;
+  float x = 0, y = 0;
   float lastDistance = 0;
 
   RotaryEncoder &encoder;

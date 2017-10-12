@@ -9,8 +9,8 @@ void Mapper::updateCoordinates() {
   float distance = encoder.getDistance();
   float angle = (compass.getDegree() * PI) / 180;
 
-  y = y + (distance - lastDistance) * cos(angle);
-  x = x + (distance - lastDistance) * sin(angle);
+  y += (distance - lastDistance) * cos(angle);
+  x += (distance - lastDistance) * sin(angle);
 
   lastDistance = distance;
 }
