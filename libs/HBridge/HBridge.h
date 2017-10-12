@@ -8,12 +8,13 @@ private:
 
 public:
   HBridge(int, int, int, int);
+  void move(int, int);
   
-  void forward();
-  void backward();
-  void left();
-  void right();
-  void stop();
+  //void forward();
+  //void backward();
+  //void left();
+  //void right();
+  //void stop();
 };
 
 #endif

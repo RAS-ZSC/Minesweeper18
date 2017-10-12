@@ -10,8 +10,8 @@
 //#include <RF.h>
 //#include <PosTracker.h>
 
-HBridge hbridge(6, 7, 4, 5);
-SoftwareSerial bluetooth(50, 51);
+HBridge hbridge(6, 7, 4, 5, 10, 11);
+//SoftwareSerial bluetooth(50, 51);
 
 //MetalDetector rdetector(10), ldetector(11);
 //RotaryEncoder encoder(0.025);
@@ -23,7 +23,7 @@ SoftwareSerial bluetooth(50, 51);
 
 void setup() {
   Serial.begin(9600);
-  bluetooth.begin(9600);
+  //bluetooth.begin(9600);
   //compass.begin();
   //compass.init();
   
@@ -31,6 +31,7 @@ void setup() {
 }
 
 void loop() {
+/*
   if (bluetooth.available() > 0) {
     int code = bluetooth.read();
 
@@ -43,5 +44,10 @@ void loop() {
     }
 
     Serial.println(code, HEX);
+  }
+*/
+
+  if (Serial.available() > 0) {
+
   }
 }
