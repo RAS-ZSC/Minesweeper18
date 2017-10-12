@@ -1,9 +1,9 @@
 #!/usr/bin/env python2.7
 from __future__ import division
-from std_msgs.msg import Int8, String
-import rospy
+#from std_msgs.msg import Int8, String
+#import rospy
 import pygame
-#import serial 
+import serial 
 
 # Key mappings
 PS3_BUTTON_A = 0
@@ -19,19 +19,19 @@ PS3_BUTTON_Start = 9
 
 
 #Start the communication with Arduino 
-#serial_comm_port = serial.Serial('/dev/ttyACM0',9600)
+serial_comm_port = serial.Serial('/dev/ttyACM0',9600)
 
 #Start pygame 
 pygame.init()
 
 #Start ROS Node
-rospy.init_node('Joystick_node', anonymous=True)
-pub = rospy.Publisher('Joystick_', Int8, queue_size = 10 )
+#rospy.init_node('Joystick_node', anonymous=True)
+#pub = rospy.Publisher('Joystick_', Int8, queue_size = 10 )
 
 # Wait for a joystick
 while pygame.joystick.get_count() == 0:
     print ("waiting for joystick")
-    rospy.Rate(1).sleep()    
+    #rospy.Rate(1).sleep()    
     pygame.joystick.get_count()
     pygame.joystick.quit()
     pygame.joystick.init()
@@ -57,109 +57,115 @@ print("numbuttons")
 print(numbuttons)
 print("--------------")
  
+X = 0
+Y = 0
+# Mappinng butttons    
 def buttonscontrol(event):
-
-#Mapinng butttons    
+    global X
+    global Y
+    if event.axis > 1:
+        return
+    if event.axis is 0:
+        X = int(256 * event.value)
+    elif event.axis is 1:
+        Y = int(256 * event.value)
+        #print "XY"[event.axis], event.value
+    print (X, Y)
+    return
+    print(event)
+    Mode = ""
     if event.type == pygame.JOYAXISMOTION and event.value < 0 and event.axis == 0:
-        #print("AXIS_LEFT_HORIZONTAL L")
-	    #Publish in ROS 
-        rospy.loginfo('left')
-        pub.publish('L')
-		
-		#Send through serial 
-		#Mode = 'L'		
+        print("AXIS_LEFT_HORIZONTAL L")
+        #Publish in ROS 
+        #rospy.loginfo('left')
+        #pub.publish('L')
+        #Send through serial 
+        Mode = 'L'		
     elif event.type == pygame.JOYAXISMOTION and event.value < 0 and event.axis == 1:
-        #print("AXIS_LEFT_VERTICAL U")
-		
-		#Publish in ROS 
-        rospy.loginfo('Up')
-        pub.publish('U')
-		
-		#Send through serial 
-		#Mode = 'U'
+        print("AXIS_LEFT_VERTICAL U")
+        #Publish in ROS 
+        #rospy.loginfo('Up')
+        #pub.publish('U')
+        #Send through serial 
+        Mode = 'U'
     elif event.type == pygame.JOYAXISMOTION and event.value == 1 and event.axis == 0:
-        #print("AXIS_LEFT_HORIZONTAL R")
-        
-		#Publish in ROS 
-		rospy.loginfo('Right')
-        pub.publish('R')
-		
-		#Send through serial 
-		#Mode = 'R'
+        print("AXIS_LEFT_HORIZONTAL R")
+        #Publish in ROS 
+        #rospy.loginfo('Right')
+        #pub.publish('R')
+        #Send through serial 
+        Mode = 'R'
     elif event.type == pygame.JOYAXISMOTION and event.value == 1 and event.axis == 1:
-        #print("AXIS_LEFT_VERTICAL D")
-		#Publish in ROS 
-		rospy.loginfo('Down')
-        pub.publish('D')
-		
-		#Send through serial 
-		#Mode = 'D'
+        print("AXIS_LEFT_VERTICAL D")
+        #Publish in ROS 
+        #rospy.loginfo('Down')
+        #pub.publish('D')
+        #Send through serial 
+        Mode = 'D'
     if event.type == pygame.JOYBUTTONDOWN:
         if event.button == PS3_BUTTON_X:
-            #print("BUTTON_X")
-            rospy.loginfo('X')
-            pub.publish('X')
-			#Mode = 'X'
+            print("BUTTON_X")
+            #rospy.loginfo('X')
+            #pub.publish('X')
+            Mode = 'X'
         elif event.button == PS3_BUTTON_Y:
-            #print("BUTTON_Y")
-            rospy.loginfo('Y')
-            pub.publish('Y')
-			#Mode = 'Y'
+            print("BUTTON_Y")
+            #rospy.loginfo('Y')
+            #pub.publish('Y')
+            Mode = 'Y'
         elif event.button ==PS3_BUTTON_B:
-            #print("BUTTON_B")
-            rospy.loginfo('B')
-            pub.publish('B')
-			#Mode= 'B'
+            print("BUTTON_B")
+            #rospy.loginfo('B')
+            #pub.publish('B')
+            Mode= 'B'
         elif event.button == PS3_BUTTON_A:
-            #print("BUTTON_A")
-            rospy.loginfo('A')
-            pub.publish('A')
-			#Mode= 'A'
+            print("BUTTON_A")
+            #rospy.loginfo('A')
+            #pub.publish('A')
+            Mode= 'A'
         elif event.button == PS3_BUTTON_RB :
-            #print("BUTTON_RB")
-            rospy.loginfo('RB')
-            pub.publish('M')
-			#Mode = 'M'
+            print("BUTTON_RB")
+            #rospy.loginfo('RB')
+            #pub.publish('M')
+            Mode = 'M'
         elif event.button == PS3_BUTTON_RT :
-            #print("BUTTON_RT")
-            rospy.loginfo('RT')
-            pub.publish('N')
-			#Mode = 'N'
+            print("BUTTON_RT")
+            #rospy.loginfo('RT')
+            #pub.publish('N')
+            Mode = 'N'
         elif event.button == PS3_BUTTON_LB :
-            #print("BUTTON_LB")
-            rospy.loginfo('LB')
-            pub.publish('O')
-			#Mode = 'P'
+            print("BUTTON_LB")
+            #rospy.loginfo('LB')
+            #pub.publish('O')
+            Mode = 'P'
         elif event.button == PS3_BUTTON_LT :
-            #print("BUTTON_LT")
-            rospy.loginfo('LT')
-            pub.publish('P')
-			#Mode = 'P'
+            print("BUTTON_LT")
+            #rospy.loginfo('LT')
+            #pub.publish('P')
+            Mode = 'P'
         elif event.button == PS3_BUTTON_Back :
-            #print("BUTTON_Back")
-            rospy.loginfo('Back')
-            pub.publish('K')
-			#Mode = 'K'
+            print("BUTTON_Back")
+            #rospy.loginfo('Back')
+            #pub.publish('K')
+            Mode = 'K'
         elif event.button == PS3_BUTTON_Start:
-            #print("BUTTON_Start")
-            rospy.loginfo('Start')
-            pub.publish('S')
-			#Mode = 'S'
-        #serial_comm_port.write(Mode)
-        rospy.Rate(10).sleep()
+            print("BUTTON_Start")
+            #rospy.loginfo('Start')
+            #pub.publish('S')
+            Mode = 'S'
+    serial_comm_port.write(Mode)
+    #rospy.Rate(10).sleep()
         
 
 #Announcment for start 
-rospy.loginfo('Begin')
-pub.publish(0000)
+#rospy.loginfo('Begin')
+#pub.publish(0000)
 
 while True:
-
     #read in joystick events
     events = pygame.event.get()
    
     # and process them
     for event in events:
         buttonscontrol(event)
-
 
