@@ -4,6 +4,8 @@ from __future__ import division
 #import rospy
 import pygame
 import serial 
+import struct
+from math import *
 
 # Key mappings
 PS3_BUTTON_A = 0
@@ -19,7 +21,7 @@ PS3_BUTTON_Start = 9
 
 
 #Start the communication with Arduino 
-serial_comm_port = serial.Serial('/dev/ttyACM0',9600)
+arduino = serial.Serial('/dev/ttyACM1', 9600)
 
 #Start pygame 
 pygame.init()
@@ -59,19 +61,48 @@ print("--------------")
  
 X = 0
 Y = 0
+res = 255
 # Mappinng butttons    
 def buttonscontrol(event):
     global X
     global Y
-    if event.axis > 1:
-        return
-    if event.axis is 0:
-        X = int(256 * event.value)
-    elif event.axis is 1:
-        Y = int(256 * event.value)
-        #print "XY"[event.axis], event.value
-    print (X, Y)
+
+    if event.type == pygame.JOYAXISMOTION:
+        if event.axis > 1:
+            return
+        if event.axis is 0:
+            X =  int(res * event.value)
+        elif event.axis is 1:
+            Y = -int(res * event.value)
+
+        r = sqrt(X**2 + Y**2)
+        r = res if r > res else r
+        th = atan2(abs(Y), abs(X)) * 4 / 3.141592653589793 * r - r
+
+        r  = int(ceil(r))
+        th = int(ceil(th))
+
+        L = 0
+        R = 0
+        if X >= 0 and Y >= 0:   #First Quadrant
+            L = r
+            R = th
+        elif X < 0 and Y >= 0:  #Second Quadrant
+            L = th
+            R = r
+        elif X < 0 and Y < 0:   #Third Quadrant
+            L = -r
+            R = -th
+        else:
+            L = -th
+            R = -r
+        
+        print (L, R)
+        #print (X, Y)
+        arduino.write(b"S")
+        arduino.write(struct.pack(">hh", L, R))
     return
+
     print(event)
     Mode = ""
     if event.type == pygame.JOYAXISMOTION and event.value < 0 and event.axis == 0:
@@ -153,7 +184,7 @@ def buttonscontrol(event):
             #rospy.loginfo('Start')
             #pub.publish('S')
             Mode = 'S'
-    serial_comm_port.write(Mode)
+    #serial_comm_port.write(Mode)
     #rospy.Rate(10).sleep()
         
 
@@ -169,3 +200,5 @@ while True:
     for event in events:
         buttonscontrol(event)
 
+    #while arduino.in_waiting > 0:
+    #    print arduino.read()
