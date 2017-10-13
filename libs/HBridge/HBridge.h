@@ -19,6 +19,9 @@ public:
   void left();
   void right();
   void stop();
+
+  void enablePWM();
+  void disablePWM();
 };
 
 #endif

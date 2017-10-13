@@ -1,14 +1,15 @@
 ARD_BLD = arduino-builder
 
 ARD_HW = /usr/share/arduino/hardware/
-ARD_BLD_FQBN = "arduino:avr:mega:cpu=atmega2560"
-#ARD_BLD_FQBN = "arduino:avr:uno:cpu=atmega328p"
-#PART_NO = m328p
-PART_NO = atmega2560
+#ARD_BLD_FQBN = "arduino:avr:mega:cpu=atmega2560"
+ARD_BLD_FQBN = "arduino:avr:uno:cpu=atmega328p"
+PART_NO = m328p
+#PART_NO = atmega2560
 BAUDRATE = 115200
-PORT = /dev/ttyACM2
+PORT = /dev/ttyACM1
 CONFIG = /etc/avrdude/avrdude.conf
-PROGRAMMER = wiring
+#PROGRAMMER = wiring
+PROGRAMMER = arduino
 
 ARD_BLD_FLAGS = -hardware $(ARD_HW) -fqbn $(ARD_BLD_FQBN) -compile -verbose -libraries ./libs/ -build-path $(PWD)/build
 

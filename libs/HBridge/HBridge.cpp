@@ -16,6 +16,9 @@ HBridge::HBridge(int lm1, int lm2, int rm1, int rm2, int pwm1, int pwm2) {
 
   pinMode(pwm1, OUTPUT);
   pinMode(pwm2, OUTPUT);
+
+  digitalWrite(this->pwm1, HIGH);
+  digitalWrite(this->pwm2, HIGH);
   PWMEnabled = true;
 }
 
@@ -37,8 +40,10 @@ void HBridge::setMotorsPWM(bool m1, bool m2, bool m3, bool m4, short pwm1, short
   digitalWrite(this->m3, m3);
   digitalWrite(this->m4, m4);
 
-  analogWrite(this->pwm1, pwm1);
-  analogWrite(this->pwm2, pwm2);
+  if (PWMEnabled) {
+    analogWrite(this->pwm1, pwm1);
+    analogWrite(this->pwm2, pwm2);
+  }
 }
 
 void HBridge::setMotors(bool m1, bool m2, bool m3, bool m4) {
@@ -84,4 +89,12 @@ void HBridge::right() {
 
 void HBridge::stop() {
   setMotors(0, 0, 0, 0);
+}
+
+void HBridge::enablePWM() {
+  PWMEnabled = true;
+}
+
+void HBridge::disablePWM() {
+  PWMEnabled = false;
 }

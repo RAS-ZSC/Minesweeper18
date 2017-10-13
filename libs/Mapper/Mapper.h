@@ -20,17 +20,17 @@ ros::Publisher mine_pl("Mine_place", &coordinates);
 class Mapper {
 private:
   char type = 'n';
-  int x = 0, y = 0;
+  float x = 0, y = 0;
   float lastDistance = 0;
 
-  RotaryEncoder &encoder;
+  RotaryEncoder &lencoder, &rencoder;
   Compass &compass;
-  Ultrasonic &usonic;
-
+  Ultrasonic &lusonic, &rusonic;
+  MetalDetector &lmd, &rmd;
 public:
-  Mapper(RotaryEncoder&, Compass&, Ultrasonic&);
+  Mapper(RotaryEncoder&, RotaryEncoder&, Compass&, Ultrasonic&, Ultrasonic&, MetalDetector&, MetalDetector&);
   void updateCoordinates();
-  void map(bool, bool);
+  void map();
   void publisher();
 };
 

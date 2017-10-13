@@ -5,6 +5,7 @@
 #define PIN_INT1  3
 class RotaryEncoder {
 private:
+  int state = 3;
   float mps;
 
 public:

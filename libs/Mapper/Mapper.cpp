@@ -1,17 +1,20 @@
 #include <Mapper.h>
+#include <stdint.h>
 
-Mapper::Mapper(RotaryEncoder& enc, Compass& com, Ultrasonic& us):
-  encoder(enc), compass(com), usonic(us) {
+Mapper::Mapper(RotaryEncoder& lenc, RotaryEncoder& renc, Compass& com, Ultrasonic& lus, Ultrasonic& rus, MetalDetector& lmd, MetalDetector& rmd):
+  lencoder(lenc), rencoder(renc), compass(com), lusonic(lus), rusonic(rus), lmd(lmd), rmd(rmd) {
 	  
   nh.initNode();
   nh.advertise(mine_lo);
-  coor.data_length =3;
+  coordinates.data_length = 3;
   nh.advertise(mine_pl);
-
 }
 
 void Mapper::updateCoordinates() {
-  float distance = encoder.getDistance();
+  float ldistance = lencoder.getDistance();
+  float rdistance = rencoder.getDistance();
+  float distance = (ldistance + rdistance) / 2;
+
   float angle = (compass.getDegree() * PI) / 180;
 
   y += (distance - lastDistance) * cos(angle);
@@ -20,7 +23,7 @@ void Mapper::updateCoordinates() {
   lastDistance = distance;
 }
 
-void Mapper::map(bool m1, bool m2) {
+void Mapper::map() {
 
   // if some intrrupt happend form the Ultrasonic 
   // then set type to be 's'
@@ -41,12 +44,10 @@ void Mapper::publish()
   // Publish to ROS the new values of x and y
   // with the type of Mine 
   updateCoordinates();
-  coordinates.data[1]= x;
-  coordinates.data[2]= y;
+  coordinates.data[1] = (uint16_t) x;
+  coordinates.data[2] = (uint16_t) y;
   str_msg.data = type;
   mine_lo.publish(&str_msg);
   mine_pl.publish(&coordinates);
 
- }
-
-
+}

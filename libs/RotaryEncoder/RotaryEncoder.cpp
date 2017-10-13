@@ -2,11 +2,9 @@
 #include <RotaryEncoder.h>
 
 static RotaryEncoder *ref = NULL;
+static RotaryEncoder *ref2 = NULL;
 
-int state = 3, pos = 0;
-bool dir = true;
-
-static void encoderUpdate(void) {
+static void encoderUpdate1(void) {
   if (ref) {
     ref->pos;
     delay(2);
@@ -18,7 +16,7 @@ static void encoderUpdate(void) {
     if (input == state)
       return;
 
-    int code = state << 2 | input;
+    int code = ref->state << 2 | input;
 
     switch (code) {
       case 0b0111:
@@ -35,20 +33,65 @@ static void encoderUpdate(void) {
         break;
     }
 
-    state = input;
+    ref->state = input;
 
-    if (step && state == 3) {
+    if (step && ref->state == 3) {
       ref->dir? ++ref->pos : --ref->pos;
     }
   }
 }
 
-RotaryEncoder::RotaryEncoder(float mps) : mps(mps) {
-  pinMode(PIN_INT0, INPUT_PULLUP);
-  pinMode(PIN_INT1, INPUT_PULLUP);
-  attachInterrupt(0, encoderUpdate, CHANGE);
-  attachInterrupt(1, encoderUpdate, CHANGE);
-  ref = this;
+static void encoderUpdate2(void) {
+  if (ref2) {
+    ref2->pos;
+    delay(2);
+    int A = digitalRead(PIN_INT0);
+    int B = digitalRead(PIN_INT1);
+    int input = A << 1 | B;
+    bool step = true;
+
+    if (input == state)
+      return;
+
+    int code = ref2->state << 2 | input;
+
+    switch (code) {
+      case 0b0111:
+        step = !ref2->dir;
+        break;
+      case 0b1011:
+        step = ref2->dir;
+        break;
+      case 0b1101:
+        ref2->dir = true;
+        break;
+      case 0b1110:
+        ref2->dir = false;
+        break;
+    }
+
+    ref2->state = input;
+
+    if (step && ref2->state == 3) {
+      ref2->dir? ++ref2->pos : --ref2->pos;
+    }
+  }
+}
+
+RotaryEncoder::RotaryEncoder(int id, float mps) : mps(mps) {
+  if (id == 0) {
+    pinMode(PIN_INT0, INPUT_PULLUP);
+    pinMode(PIN_INT1, INPUT_PULLUP);
+    attachInterrupt(0, encoderUpdate, CHANGE);
+    attachInterrupt(1, encoderUpdate, CHANGE);
+    ref = this;
+  } else {
+    pinMode(PIN_INT2, INPUT_PULLUP);
+    pinMode(PIN_INT3, INPUT_PULLUP);
+    attachInterrupt(2, encoderUpdate, CHANGE);
+    attachInterrupt(3, encoderUpdate, CHANGE);
+    ref2 = this;
+  }
 }
 
 float RotaryEncoder::getDistance() {

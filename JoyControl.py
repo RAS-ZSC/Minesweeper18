@@ -21,7 +21,7 @@ PS3_BUTTON_Start = 9
 
 
 #Start the communication with Arduino 
-arduino = serial.Serial('/dev/ttyACM1', 9600)
+arduino = serial.Serial('/dev/ttyACM0', 9600)
 
 #Start pygame 
 pygame.init()

@@ -3,7 +3,7 @@
 
 MetalDetector::MetalDetector(int pin) {
   this->pin = pin;
-  pinMode(pin, OUTPUT);
+  pinMode(pin, INPUT);
 }
 
 int MetalDetector::detect() {
