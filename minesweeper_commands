@@ -15,3 +15,5 @@ sudo apt-get install ros-indigo-rosserial                 **to download ros_seri
 
 sudo apt-get install python-pygame                       **to download pygame**
 
+catkin_make                                             **to install changes in the work space **
+
