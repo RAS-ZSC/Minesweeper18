@@ -10,7 +10,8 @@ rosrun rosserial_python serial_node.py /dev/ttyACM1        **start arduino**
 rosrun joypkg JoyControl.py                              **start joystick**
 
 
+sudo apt-get install ros-indigo-rosserial-arduino
+sudo apt-get install ros-indigo-rosserial                 **to download ros_serial**
 
-
-
+sudo apt-get install python-pygame                       **to download pygame**
 
