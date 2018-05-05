@@ -1,0 +1,16 @@
+
+
+roscore                                                  **master** 
+
+roslaunch robot_model robot_rviz.launch model:=robot.urdf  **rviz load **
+
+rosrun rosserial_python serial_node.py /dev/ttyACM0        **start arduino**
+rosrun rosserial_python serial_node.py /dev/ttyACM1        **start arduino**
+
+rosrun joypkg JoyControl.py                              **start joystick**
+
+
+
+
+
+
