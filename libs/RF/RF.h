@@ -15,7 +15,9 @@ private:
 
 public:
     RF(uint16_t, uint16_t);
-    void begin();
+    void begin(int);
+    void send(void *, size_t);
+    int  read(void *, size_t);
 };
 
 #endif

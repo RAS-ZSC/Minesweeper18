@@ -4,8 +4,12 @@ JoyControl::JoyControl(HBridge& hbridge) : hbridge(hbridge) {
 
 }
 
+
 void JoyControl::handle(char code) {
 #if 0
+=======
+void JoyControl::handle(byte code) {
+
   switch (state) {
     case 0:
       if (code == 'S')
@@ -32,6 +36,7 @@ void JoyControl::handle(char code) {
       break;
   }
 
+
 #endif
   if (code == 'Y') 
 	hbridge.left() ;
@@ -48,5 +53,7 @@ void JoyControl::handle(char code) {
  else if (code=='Q')
         hbridge.stop();
 
+
+=======
 
 }

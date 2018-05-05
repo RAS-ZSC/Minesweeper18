@@ -1,3 +1,4 @@
+
 #define BLUETOOTH_CTRL  0
 #define JOYSTICK_CTRL   1
 
@@ -37,4 +38,17 @@ delay(1);
   
 }
 
+
+=======
+#include <RF.h>
+
+RF radio(7, 6);
+
+void setup() {
+  radio.begin(0);
+}
+
+void loop() {
+
+}
 

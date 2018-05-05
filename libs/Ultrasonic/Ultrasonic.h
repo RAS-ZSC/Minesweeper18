@@ -3,12 +3,11 @@
 
 class Ultrasonic {
 private:
-  int echo[2], trig[2];
-  void outPulse(int);
+  int echo, trig;
 
 public:
-  Ultrasonic(int, int, int, int);
-  int getDistance(int);
+  Ultrasonic(int, int);
+  long getDistance();
 };
 
 #endif
