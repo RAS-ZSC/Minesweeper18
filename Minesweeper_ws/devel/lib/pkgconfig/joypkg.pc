@@ -1,0 +1,8 @@
+prefix=/home/hazem/Minesweeper_ws/devel
+
+Name: joypkg
+Description: Description of joypkg
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/hazem/Minesweeper_ws/devel/lib 
+Requires: 

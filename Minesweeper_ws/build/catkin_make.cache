@@ -1,0 +1,2 @@
+joypkg:robot_model
+-DCATKIN_DEVEL_PREFIX=/home/hazem/Minesweeper_ws/devel -DCMAKE_INSTALL_PREFIX=/home/hazem/Minesweeper_ws/install -G Unix Makefiles
