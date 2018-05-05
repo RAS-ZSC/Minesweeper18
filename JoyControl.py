@@ -99,11 +99,19 @@ def buttonscontrol(event):
         
         print (L, R)
         #print (X, Y)
+
+      #  arduino.write(b"S")
+      #  arduino.write(struct.pack(">hh", L, R))
+   # return
+
+  #  print(event)
+=======
         arduino.write(b"S")
         arduino.write(struct.pack(">hh", L, R))
     return
 
     print(event)
+
     Mode = ""
     if event.type == pygame.JOYAXISMOTION and event.value < 0 and event.axis == 0:
         print("AXIS_LEFT_HORIZONTAL L")
@@ -111,7 +119,12 @@ def buttonscontrol(event):
         #rospy.loginfo('left')
         #pub.publish('L')
         #Send through serial 
+
+        Mode = 'L'
+			
+
         Mode = 'L'		
+
     elif event.type == pygame.JOYAXISMOTION and event.value < 0 and event.axis == 1:
         print("AXIS_LEFT_VERTICAL U")
         #Publish in ROS 
@@ -119,6 +132,7 @@ def buttonscontrol(event):
         #pub.publish('U')
         #Send through serial 
         Mode = 'U'
+
     elif event.type == pygame.JOYAXISMOTION and event.value == 1 and event.axis == 0:
         print("AXIS_LEFT_HORIZONTAL R")
         #Publish in ROS 
@@ -126,6 +140,7 @@ def buttonscontrol(event):
         #pub.publish('R')
         #Send through serial 
         Mode = 'R'
+
     elif event.type == pygame.JOYAXISMOTION and event.value == 1 and event.axis == 1:
         print("AXIS_LEFT_VERTICAL D")
         #Publish in ROS 
@@ -133,23 +148,37 @@ def buttonscontrol(event):
         #pub.publish('D')
         #Send through serial 
         Mode = 'D'
+
     if event.type == pygame.JOYBUTTONDOWN:
         if event.button == PS3_BUTTON_X:
             print("BUTTON_X")
             #rospy.loginfo('X')
             #pub.publish('X')
             Mode = 'X'
+
+            
+        elif event.button == PS3_BUTTON_Y:        ###LEFT (Y)
+=======
         elif event.button == PS3_BUTTON_Y:
+
             print("BUTTON_Y")
             #rospy.loginfo('Y')
             #pub.publish('Y')
             Mode = 'Y'
+
+        elif event.button ==PS3_BUTTON_B:          ### RIGHT (B)
+=======
         elif event.button ==PS3_BUTTON_B:
+
             print("BUTTON_B")
             #rospy.loginfo('B')
             #pub.publish('B')
             Mode= 'B'
+
+        elif event.button == PS3_BUTTON_A:        ###DOWN (A) 
+=======
         elif event.button == PS3_BUTTON_A:
+
             print("BUTTON_A")
             #rospy.loginfo('A')
             #pub.publish('A')
@@ -164,7 +193,11 @@ def buttonscontrol(event):
             #rospy.loginfo('RT')
             #pub.publish('N')
             Mode = 'N'
+
+        elif event.button == PS3_BUTTON_LB :         #### UP (Y)
+=======
         elif event.button == PS3_BUTTON_LB :
+
             print("BUTTON_LB")
             #rospy.loginfo('LB')
             #pub.publish('O')
@@ -184,7 +217,14 @@ def buttonscontrol(event):
             #rospy.loginfo('Start')
             #pub.publish('S')
             Mode = 'S'
+
+    elif event.type == pygame.JOYBUTTONUP:  ### STOP WHEN NO BUTTON IS PRESSED 
+        print("STOP")
+        Mode = 'Q'
+    arduino.write(Mode)
+=======
     #serial_comm_port.write(Mode)
+
     #rospy.Rate(10).sleep()
         
 

@@ -18,7 +18,11 @@ private:
 
 public:
   JoyControl(HBridge&);
+
+  void handle(char);
+=======
   void handle(byte);
+
 };
 
 #endif

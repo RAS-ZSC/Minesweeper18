@@ -4,7 +4,12 @@ JoyControl::JoyControl(HBridge& hbridge) : hbridge(hbridge) {
 
 }
 
+
+void JoyControl::handle(char code) {
+#if 0
+=======
 void JoyControl::handle(byte code) {
+
   switch (state) {
     case 0:
       if (code == 'S')
@@ -30,4 +35,25 @@ void JoyControl::handle(byte code) {
       hbridge.move(x, y);
       break;
   }
+
+
+#endif
+  if (code == 'Y') 
+	hbridge.left() ;
+
+  else if (code == 'P') 
+	hbridge.forward();
+
+ else if (code== 'B')
+	hbridge.right();
+
+ else if (code=='A') 
+	hbridge.backward();
+	
+ else if (code=='Q')
+        hbridge.stop();
+
+
+=======
+
 }

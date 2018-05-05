@@ -1,1 +1,1 @@
-##### Software used for Minesweepers Competition 2017 by IEEE RAS Zagazig SC
+##### Software used for Minesweepers Competition 2018 by IEEE RAS Zagazig SC

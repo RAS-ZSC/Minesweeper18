@@ -13,7 +13,11 @@ static void encoderUpdate1(void) {
     int input = A << 1 | B;
     bool step = true;
 
+
+    if (input == ref->state)
+=======
     if (input == state)
+
       return;
 
     int code = ref->state << 2 | input;
@@ -50,7 +54,10 @@ static void encoderUpdate2(void) {
     int input = A << 1 | B;
     bool step = true;
 
+    if (input == ref2->state)
+=======
     if (input == state)
+
       return;
 
     int code = ref2->state << 2 | input;
@@ -82,14 +89,24 @@ RotaryEncoder::RotaryEncoder(int id, float mps) : mps(mps) {
   if (id == 0) {
     pinMode(PIN_INT0, INPUT_PULLUP);
     pinMode(PIN_INT1, INPUT_PULLUP);
+
+    attachInterrupt(0, encoderUpdate1, CHANGE);      // interrupt 0 ,1  (2,3)
+    attachInterrupt(1, encoderUpdate2, CHANGE);
+=======
     attachInterrupt(0, encoderUpdate, CHANGE);
     attachInterrupt(1, encoderUpdate, CHANGE);
+
     ref = this;
   } else {
     pinMode(PIN_INT2, INPUT_PULLUP);
     pinMode(PIN_INT3, INPUT_PULLUP);
+
+    attachInterrupt(2, encoderUpdate1, CHANGE);      //interrupt 2 ,3  (18,19) or (20,21)
+    attachInterrupt(3, encoderUpdate2, CHANGE);
+=======
     attachInterrupt(2, encoderUpdate, CHANGE);
     attachInterrupt(3, encoderUpdate, CHANGE);
+
     ref2 = this;
   }
 }
