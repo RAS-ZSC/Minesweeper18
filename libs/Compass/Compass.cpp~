@@ -1,7 +1,7 @@
 #include <Compass.h>
-
-Compass::Compass(): Adafruit_HMC5883_Unified(12345) {
-  
+Adafruit_HMC5883_Unified mag =Adafruit_HMC5883_Unified(12345);
+Compass::Compass()  {
+   
 }
 
 void Compass::begin() {
@@ -24,7 +24,7 @@ float *Compass::getField() {
 
 float Compass::getDegree() {
   sensors_event_t event;
-  getEvent(&event);
+  mag.getEvent(&event);
 
   float heading  = atan2(event.magnetic.x, event.magnetic.z);
 
@@ -38,14 +38,15 @@ float Compass::getDegree() {
     heading -= 2 * PI;
 
   headingDegrees = heading * 180 / M_PI;
-  degree = preHeading + headingDegrees;
+  /*degree = preHeading + headingDegrees;
 
   if (degree < 0)
     degree += 2 * 180;
   else if (degree > 2 * 180)
     degree -= 2 * 180;
 
-  return degree;
+  return degree; */
+return headingDegrees ;
 }
 
 void Compass::init() {

@@ -6,7 +6,7 @@
 #define PIN_INT2  2
 #define PIN_INT3  3
 class RotaryEncoder {
-public:
+private:
   int state = 3;
   float mps;
 
