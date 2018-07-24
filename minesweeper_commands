@@ -11,14 +11,14 @@ rosrun rosserial_python serial_node.py /dev/ttyACM0        **start arduino**
 rosrun rosserial_python serial_node1.py /dev/ttyACM1        **start arduino**
 
 rosrun joypkg JoyControl.py                              **start joystick**
-roslaunch robot_model robot_rviz.launch model:=robot.urdf  **rviz load **
+roslaunch urdf_tutorial display.launch model:='$(find urdf_tutorial)thunder.urdf'       **rviz load **
 
 
 
                                       **important commands** 
 
-sudo apt-get install ros-indigo-rosserial-arduino
-sudo apt-get install ros-indigo-rosserial                 **to download ros_serial**
+sudo apt-get install ros-kinetic-rosserial-arduino
+sudo apt-get install ros-kinetic-rosserial                 **to download ros_serial**
 rosrun rosserial_arduino make_libraries.py arduinoIDE-directory        **to generate ros_lib** **note : always use the lib generated from ros version which is on the raspberry pi**
 sudo apt-get install python-pygame                       **to download pygame**
 catkin_make                                            **to install changes in the work space **
