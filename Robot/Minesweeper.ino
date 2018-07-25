@@ -1,6 +1,8 @@
+
 #include <ros.h>
 #include <ros/time.h>
 #include <tf/tf.h>
+#include <visualization_msgs/Marker.h>
 #include <tf/transform_broadcaster.h>
 int marker_id=0;
 float sonic_distance=300 ; //calibrate ultrasonic then change this 
@@ -16,8 +18,8 @@ double DistancePerCount = (3.14159265 * 0.062)/500;
 //unsigned long current_time , last_time ;
 
 
-double x; 
-double y;
+double x=-8.5; 
+double y=-9.5;
 double th;
 double v_left;//left motor speed
 double v_right;//right motor speed
@@ -35,8 +37,8 @@ double delta_y;//corresponding change in y direction
 
 int encoderPin1 = 3;
 int encoderPin2 = 2;
-int encoderPin3 = 21;
-int encoderPin4 = 20;
+int encoderPin3 = 19;
+int encoderPin4 = 18;
 
 
 volatile int lastEncoded1 = 0;
@@ -59,7 +61,7 @@ int lastLSB2 = 0;
 
 
 
-#include <visualization_msgs/Marker.h>
+
 visualization_msgs::Marker marker;
 ros::Publisher mark("mark", &marker);
 
@@ -100,19 +102,20 @@ digitalWrite(encoderPin4, HIGH); //turn pullup resistor on
 //on interrupt 0 (pin 2), or interrupt 1 (pin 3)
 attachInterrupt(0, updateEncoder, CHANGE);
 attachInterrupt(1, updateEncoder, CHANGE);
-attachInterrupt(2, updateEncoder, CHANGE);
-attachInterrupt(3, updateEncoder, CHANGE);
+attachInterrupt(4, updateEncoder, CHANGE);
+attachInterrupt(5, updateEncoder, CHANGE);
 
 
   nh.initNode();
-  nh.advertise(mark);
   broadcaster.init(nh);
+  nh.advertise(mark);
+  
 }
 
 void loop()
 {  
 
-  nh.spinOnce();
+  //nh.spinOnce();
 
  current_time = nh.now();
 
@@ -138,50 +141,51 @@ void loop()
  _PreviousRightEncoderCounts = encoderValue2;
 
    
-if (lmetal.detect()==1){
+if (lmetal.detect()==0){
    if (lsonic.getDistance() < sonic_distance){
 visualization_msgs::Marker marker;
- marker.header.frame_id = "base_link";
+ marker.header.frame_id = "left_metal";
  marker.header.stamp = ros::Time();
  marker.ns = "my_namespace";
  marker.id = marker_id;
- marker.type = visualization_msgs::Marker::SPHERE; //if the mine above the ground will be shown as a sphere 
+ marker.type = visualization_msgs::Marker::CUBE; //if the mine above the ground will be shown as a blue cube on the suface
  marker.action = visualization_msgs::Marker::ADD;
- marker.pose.position.x = 1;
- marker.pose.position.y = 1;
- marker.pose.position.z = 1;
+ marker.pose.position.x = 0;
+ marker.pose.position.y = 0;
+ marker.pose.position.z = 0;
  marker.pose.orientation.x = 0.0;
  marker.pose.orientation.y = 0.0;
  marker.pose.orientation.z = 0.0;
  marker.pose.orientation.w = 1.0;
- marker.scale.x = 1;
+ marker.scale.x = 0.1;
  marker.scale.y = 0.1;
  marker.scale.z = 0.1;
  marker.color.a = 1.0; // Don't forget to set the alpha!
  marker.color.r = 0.0;
- marker.color.g = 1.0;
- marker.color.b = 0.0;
+ marker.color.g = 0.0;
+ marker.color.b = 1.0;
 //only if using a MESH_RESOURCE marker type:
 // marker.mesh_resource = "package://pr2_description/meshes/base_v0/base.dae";
  mark.publish( &marker );
 marker_id++;
+nh.spinOnce();
 }   
    else{
  visualization_msgs::Marker marker;
- marker.header.frame_id = "base_link";
+ marker.header.frame_id = "left_metal";
  marker.header.stamp = ros::Time();
  marker.ns = "my_namespace";
  marker.id = marker_id;
- marker.type = visualization_msgs::Marker::CUBE; //if the mine under the ground will be shown as a cube
+ marker.type = visualization_msgs::Marker::CUBE; //if the mine under the ground will be shown as a green cube under the ground
  marker.action = visualization_msgs::Marker::ADD;
- marker.pose.position.x = 1;
- marker.pose.position.y = 1;
- marker.pose.position.z = 1;
+ marker.pose.position.x = 0;
+ marker.pose.position.y = 0;
+ marker.pose.position.z = -0.1;
  marker.pose.orientation.x = 0.0;
  marker.pose.orientation.y = 0.0;
  marker.pose.orientation.z = 0.0;
  marker.pose.orientation.w = 1.0;
- marker.scale.x = 1;
+ marker.scale.x = 0.1;
  marker.scale.y = 0.1;
  marker.scale.z = 0.1;
  marker.color.a = 1.0; // Don't forget to set the alpha!
@@ -192,53 +196,55 @@ marker_id++;
 // marker.mesh_resource = "package://pr2_description/meshes/base_v0/base.dae";
  mark.publish( &marker );
 marker_id++;
+nh.spinOnce();
 }
 }
 
- if (rmetal.detect()==1){   //put another if for ultrasonic with another different marker 
+ if (rmetal.detect()==0){   //put another if for ultrasonic with another different marker 
     if (rsonic.getDistance() < sonic_distance){
 visualization_msgs::Marker marker;
- marker.header.frame_id = "base_link";
+ marker.header.frame_id = "right_metal";
  marker.header.stamp = ros::Time();
  marker.ns = "my_namespace";
  marker.id = marker_id;
- marker.type = visualization_msgs::Marker::SPHERE;  //if the mine above the ground will be shown as a sphere
+ marker.type = visualization_msgs::Marker::CUBE;  //if the mine above the ground will be shown as a blue cube on the surface
  marker.action = visualization_msgs::Marker::ADD;
- marker.pose.position.x = 1;
- marker.pose.position.y = 1;
- marker.pose.position.z = 1;
+ marker.pose.position.x = 0;
+ marker.pose.position.y = 0;
+ marker.pose.position.z = 0;
  marker.pose.orientation.x = 0.0;
  marker.pose.orientation.y = 0.0;
  marker.pose.orientation.z = 0.0;
  marker.pose.orientation.w = 1.0;
- marker.scale.x = 1;
+ marker.scale.x = 0.1;
  marker.scale.y = 0.1;
  marker.scale.z = 0.1;
  marker.color.a = 1.0; // Don't forget to set the alpha!
  marker.color.r = 0.0;
- marker.color.g = 1.0;
- marker.color.b = 0.0;
+ marker.color.g = 0.0;
+ marker.color.b = 1.0;
 //only if using a MESH_RESOURCE marker type:
 // marker.mesh_resource = "package://pr2_description/meshes/base_v0/base.dae";
  mark.publish( &marker );
 marker_id++;
+nh.spinOnce();
 }
 else{
  visualization_msgs::Marker marker;
- marker.header.frame_id = "base_link";
+ marker.header.frame_id = "right_metal";
  marker.header.stamp = ros::Time();
  marker.ns = "my_namespace";
  marker.id = marker_id;
- marker.type = visualization_msgs::Marker::CUBE; //if the mine under the ground will be shown as a cube
+ marker.type = visualization_msgs::Marker::CUBE; //if the mine under the ground will be shown as a green cube under the ground
  marker.action = visualization_msgs::Marker::ADD;
- marker.pose.position.x = 1;
- marker.pose.position.y = 1;
- marker.pose.position.z = 1;
+ marker.pose.position.x = 0;
+ marker.pose.position.y = 0;
+ marker.pose.position.z = -0.1;
  marker.pose.orientation.x = 0.0;
  marker.pose.orientation.y = 0.0;
  marker.pose.orientation.z = 0.0;
  marker.pose.orientation.w = 1.0;
- marker.scale.x = 1;
+ marker.scale.x = 0.1;
  marker.scale.y = 0.1;
  marker.scale.z = 0.1;
  marker.color.a = 1.0; // Don't forget to set the alpha!
@@ -249,12 +255,13 @@ else{
 // marker.mesh_resource = "package://pr2_description/meshes/base_v0/base.dae";
  mark.publish( &marker );
 marker_id++;
+nh.spinOnce();
 }
 } 
     
   // tf odom->base_link
   t.header.frame_id = odom;
-  t.child_frame_id = "minesweeperUdrf";
+  t.child_frame_id = "thunder";
   
   t.transform.translation.x = x;
   t.transform.translation.y = y;
