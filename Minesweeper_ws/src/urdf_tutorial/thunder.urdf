@@ -1,0 +1,149 @@
+<robot
+  name="thunder">
+  <link
+    name="thunder">
+    <inertial>
+      <origin
+        xyz="-0.012483 -0.0075441 0.0057085"
+        rpy="0 0 0" />
+      <mass
+        value="14.034" />
+      <inertia
+        ixx="0.80119"
+        ixy="0.024664"
+        ixz="0.0024579"
+        iyy="1.3093"
+        iyz="0.0011254"
+        izz="0.74526" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://urdf_tutorial/meshes/thunder.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://urdf_tutorial/meshes/thunder.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="left_metal">
+    <inertial>
+      <origin
+        xyz="2.22044604925031E-16 0 0.0225"
+        rpy="0 0 0" />
+      <mass
+        value="1.16541716694116" />
+      <inertia
+        ixx="0.0107755998200475"
+        ixy="-5.6920614055489E-19"
+        ixz="-3.016919599883E-18"
+        iyy="0.0107755998200475"
+        iyz="4.90639864230113E-18"
+        izz="0.0211578713462523" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://urdf_tutorial/meshes/left_metal.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.831372549019608 0.670588235294118 0.129411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://urdf_tutorial/meshes/left_metal.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_metal"
+    type="fixed">
+    <origin
+      xyz="0.0176548486088304 0.493455231002024 -0.045328450751239"
+      rpy="0.00887526725334409 7.94683411807775E-05 -1.61458024787311" />
+    <parent
+      link="thunder" />
+    <child
+      link="left_metal" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="right_metal">
+    <inertial>
+      <origin
+        xyz="1.11022302462516E-16 4.85722573273506E-17 0.0225"
+        rpy="0 0 0" />
+      <mass
+        value="1.16541716694116" />
+      <inertia
+        ixx="0.0107755998200475"
+        ixy="1.62630325872826E-18"
+        ixz="-3.16451509094207E-18"
+        iyy="0.0107755998200475"
+        iyz="4.73462300757592E-18"
+        izz="0.0211578713462523" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://urdf_tutorial/meshes/right_metal.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.831372549019608 0.670588235294118 0.129411764705882 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://urdf_tutorial/meshes/right_metal.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_metal"
+    type="fixed">
+    <origin
+      xyz="-0.0261150844775622 -0.505586403086564 -0.0454079190923362"
+      rpy="0.00887526725334409 7.94683411807792E-05 -1.61458024787311" />
+    <parent
+      link="thunder" />
+    <child
+      link="right_metal" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>
